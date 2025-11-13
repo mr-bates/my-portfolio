@@ -211,19 +211,33 @@
         }
         
         .carousel-slide:nth-child(1) {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: url('https://i.ibb.co/4Z8FfxTg/NBWP1H.webp');
+            background-size: cover;
+            background-position: center;
         }
         
         .carousel-slide:nth-child(2) {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            background: url('https://i.ibb.co/d0Xkvcrm/NBWP2H.webp');
+            background-size: cover;
+            background-position: center;
         }
         
         .carousel-slide:nth-child(3) {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            background: url('https://i.ibb.co/nHswz50/NBWP3H.webp');
+            background-size: cover;
+            background-position: center;
         }
         
         .carousel-slide:nth-child(4) {
-            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            background: url('https://i.ibb.co/1GGXs8jk/NBWP4H.webp');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .carousel-slide:nth-child(5) {
+            background: url('https://i.ibb.co/CKmk1bCj/NBWP5H.webp');
+            background-size: cover;
+            background-position: center;
         }
 
         .carousel-nav {
@@ -1232,11 +1246,13 @@
             <div class="carousel-slide"></div>
             <div class="carousel-slide"></div>
             <div class="carousel-slide"></div>
+            <div class="carousel-slide"></div>
             <div class="carousel-nav">
                 <div class="carousel-dot active" onclick="carousel.go(0)"></div>
                 <div class="carousel-dot" onclick="carousel.go(1)"></div>
                 <div class="carousel-dot" onclick="carousel.go(2)"></div>
                 <div class="carousel-dot" onclick="carousel.go(3)"></div>
+                <div class="carousel-dot" onclick="carousel.go(4)"></div>
             </div>
         </section>
         
@@ -1350,7 +1366,7 @@
             <div class="about-cover" id="aboutCover"></div>
             <div class="about-content">
                 <div class="about-profile">
-                    <img src="https://via.placeholder.com/200" alt="Profile" class="profile-pic" id="profilePic" loading="lazy">
+                    <img src="https://via.placeholder.com/200" alt="Profile" class="profile-pic" id="profilePic">
                     <div class="profile-flags">
                         <span class="flag" title="Chile">🇨🇱</span>
                         <span class="flag" title="Australia">🇦🇺</span>
@@ -1716,7 +1732,7 @@
                     Your browser doesn't support video.
                 </video>`;
               } else {
-              return `<img src="${img}" alt="Project" loading="lazy">`;
+              return `<img src="${img}" alt="Project">`;
               }
                }).join('');
                 
@@ -1819,7 +1835,7 @@
             grid.innerHTML = current.map((p, i) => `
                 <div class="project-card" onclick="nav.detail(${start + i})">
                     <div class="project-content">
-                        <img src="${p.thumb}" alt="${p.titleEn}" class="project-image" loading="lazy">
+                        <img src="${p.thumb}" alt="${p.titleEn}" class="project-image">
                         <div class="project-overlay">
                             <h3 class="project-title">${state.lang === 'en' ? p.titleEn : p.titleEs}</h3>
                             <p class="project-description">${(state.lang === 'en' ? p.descEn : p.descEs).substring(0, 100)}...</p>
@@ -1841,7 +1857,7 @@
             grid.innerHTML = featured.map((p, i) => `
                 <div class="project-card" onclick="nav.detail(${i})">
                     <div class="project-content">
-                        <img src="${p.thumb}" alt="${p.titleEn}" class="project-image" loading="lazy">
+                        <img src="${p.thumb}" alt="${p.titleEn}" class="project-image">
                         <div class="project-overlay">
                             <h3 class="project-title">${state.lang === 'en' ? p.titleEn : p.titleEs}</h3>
                             <p class="project-description">${(state.lang === 'en' ? p.descEn : p.descEs).substring(0, 80)}...</p>
@@ -1938,7 +1954,7 @@
                 // Update main image with lightbox
                 const mainElement = document.getElementById(mainId);
                 if (mainElement) {
-                    mainElement.innerHTML = `<img src="${allPhotos[globalIndex]}" alt="${type}" style="cursor: pointer;" onclick="lightbox.open('${allPhotos[globalIndex]}')" loading="lazy">`;
+                    mainElement.innerHTML = `<img src="${allPhotos[globalIndex]}" alt="${type}" style="cursor: pointer;" onclick="lightbox.open('${allPhotos[globalIndex]}')">`;
                 }
                 
                 // Update thumbnails for current page
@@ -1948,7 +1964,7 @@
                         const globalIdx = start + i;
                         return `
                             <div class="photo-thumb ${globalIdx === globalIndex ? 'active' : ''}" onclick="photo.changeMain('${type}', ${globalIdx})">
-                                <img src="${img}" alt="${type}" loading="lazy">
+                                <img src="${img}" alt="${type}">
                             </div>
                         `;
                     }).join('');
