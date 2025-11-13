@@ -1350,7 +1350,7 @@
             <div class="about-cover" id="aboutCover"></div>
             <div class="about-content">
                 <div class="about-profile">
-                    <img src="https://via.placeholder.com/200" alt="Profile" class="profile-pic" id="profilePic">
+                    <img src="https://via.placeholder.com/200" alt="Profile" class="profile-pic" id="profilePic" loading="lazy">
                     <div class="profile-flags">
                         <span class="flag" title="Chile">🇨🇱</span>
                         <span class="flag" title="Australia">🇦🇺</span>
@@ -1509,7 +1509,7 @@
                 quote: "Creatividad, el arte de la gracia futura: Enfrentar un desafío venidero cara a cara, con herramientas aún no creadas, dentro de un espacio aún vacío.",
                 portfolioTitle: "TRABAJOS SELECCIONADOS",
                 photoTitle: "FOTOGRAFÍA",
-                urbanTab: "RELATOS",
+                urbanTab: "HISTORIAS",
                 bodyTab: "FIGURA HUMANA",
                 contactTitle: "CONTACTO",
                 nameLabel: "Nombre",
@@ -1716,7 +1716,7 @@
                     Your browser doesn't support video.
                 </video>`;
               } else {
-              return `<img src="${img}" alt="Project">`;
+              return `<img src="${img}" alt="Project" loading="lazy">`;
               }
                }).join('');
                 
@@ -1819,7 +1819,7 @@
             grid.innerHTML = current.map((p, i) => `
                 <div class="project-card" onclick="nav.detail(${start + i})">
                     <div class="project-content">
-                        <img src="${p.thumb}" alt="${p.titleEn}" class="project-image">
+                        <img src="${p.thumb}" alt="${p.titleEn}" class="project-image" loading="lazy">
                         <div class="project-overlay">
                             <h3 class="project-title">${state.lang === 'en' ? p.titleEn : p.titleEs}</h3>
                             <p class="project-description">${(state.lang === 'en' ? p.descEn : p.descEs).substring(0, 100)}...</p>
@@ -1841,7 +1841,7 @@
             grid.innerHTML = featured.map((p, i) => `
                 <div class="project-card" onclick="nav.detail(${i})">
                     <div class="project-content">
-                        <img src="${p.thumb}" alt="${p.titleEn}" class="project-image">
+                        <img src="${p.thumb}" alt="${p.titleEn}" class="project-image" loading="lazy">
                         <div class="project-overlay">
                             <h3 class="project-title">${state.lang === 'en' ? p.titleEn : p.titleEs}</h3>
                             <p class="project-description">${(state.lang === 'en' ? p.descEn : p.descEs).substring(0, 80)}...</p>
@@ -1938,7 +1938,7 @@
                 // Update main image with lightbox
                 const mainElement = document.getElementById(mainId);
                 if (mainElement) {
-                    mainElement.innerHTML = `<img src="${allPhotos[globalIndex]}" alt="${type}" style="cursor: pointer;" onclick="lightbox.open('${allPhotos[globalIndex]}')">`;
+                    mainElement.innerHTML = `<img src="${allPhotos[globalIndex]}" alt="${type}" style="cursor: pointer;" onclick="lightbox.open('${allPhotos[globalIndex]}')" loading="lazy">`;
                 }
                 
                 // Update thumbnails for current page
@@ -1948,7 +1948,7 @@
                         const globalIdx = start + i;
                         return `
                             <div class="photo-thumb ${globalIdx === globalIndex ? 'active' : ''}" onclick="photo.changeMain('${type}', ${globalIdx})">
-                                <img src="${img}" alt="${type}">
+                                <img src="${img}" alt="${type}" loading="lazy">
                             </div>
                         `;
                     }).join('');
