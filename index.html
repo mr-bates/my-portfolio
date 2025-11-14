@@ -2274,17 +2274,41 @@ function updateTranslations() {
             updateTranslations();
         });
 
-        // IMAGE PROTECTION - Disable right-click on entire page
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-        });
+      // IMAGE PROTECTION - Disable right-click on entire page
+document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+});
 
-        // Prevent dragging images
-        document.addEventListener('dragstart', function(e) {
-            if (e.target.tagName === 'IMG') {
-                e.preventDefault();
-            }
-        });
+// Prevent dragging images
+document.addEventListener('dragstart', function(e) {
+    if (e.target.tagName === 'IMG') {
+        e.preventDefault();
+    }
+});
+
+// iOS/Mobile long-press protection
+document.addEventListener('touchstart', function(e) {
+    if (e.target.tagName === 'IMG') {
+        e.preventDefault();
+    }
+}, { passive: false });
+
+document.addEventListener('touchend', function(e) {
+    if (e.target.tagName === 'IMG') {
+        e.preventDefault();
+    }
+}, { passive: false });
+
+document.addEventListener('touchmove', function(e) {
+    if (e.target.tagName === 'IMG') {
+        e.preventDefault();
+    }
+}, { passive: false });
+
+// Prevent iOS callout menu
+document.addEventListener('gesturestart', function(e) {
+    e.preventDefault();
+});
 
         // KEYBOARD NAVIGATION for photo galleries
         document.addEventListener('keydown', (e) => {
