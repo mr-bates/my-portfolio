@@ -352,7 +352,7 @@
         .teaser-title {
             font-family: 'Bebas Neue', sans-serif;
             font-size: 3.5rem;
-            letter-spacing: 3px;
+            letter-spacing: 1px;
             margin-bottom: 3rem;
             text-align: center;
             color: #000;
@@ -412,7 +412,7 @@
             font-family: 'Bebas Neue', sans-serif;
             font-size: 1.8rem;
             color: #fff;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
             margin-bottom: 0.5rem;
         }
         
@@ -485,11 +485,22 @@
         .section-title {
             font-family: 'Bebas Neue', sans-serif;
             font-size: 3.5rem;
-            letter-spacing: 3px;
+            letter-spacing: 1px;
             margin-bottom: 4rem;
             text-align: center;
             color: #000;
         }
+
+        .teaser-title {
+    font-size: 3.5rem;
+    letter-spacing: 1px;
+}
+
+
+
+.project-title {
+    letter-spacing: 1px;
+}
         
         .photography-page .section-title {
             color: #fff;
@@ -549,7 +560,7 @@
             font-family: 'Bebas Neue', sans-serif;
             font-size: 1.8rem;
             color: #fff;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
             margin-bottom: 0.5rem;
         }
 
@@ -639,7 +650,7 @@
         .detail-title {
             font-family: 'Bebas Neue', sans-serif;
             font-size: 3.5rem;
-            letter-spacing: 3px;
+            letter-spacing: 1px;
             margin-bottom: 1.5rem;
             color: #000;
         }
@@ -866,6 +877,25 @@
             -webkit-user-select: none;
             -ms-user-select: none;
         }
+
+        /* Extra mobile image protection */
+img {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+}
+
+/* Disable long-press context menu on mobile */
+@media (max-width: 768px) {
+    img {
+        pointer-events: none !important;
+        -webkit-touch-callout: none !important;
+    }
+    
+    .photo-main img {
+        pointer-events: auto;
+    }
+}
         
         /* Allow clicks on main photo for lightbox */
         .photo-main img {
@@ -979,8 +1009,8 @@
         
         .about-name {
             font-family: 'Bebas Neue', sans-serif;
-            font-size: 4rem;
-            letter-spacing: 3px;
+            font-size: 3.5rem;
+            letter-spacing: 1px;
             margin-bottom: 1rem;
             color: #000;
         }
@@ -1010,7 +1040,7 @@
         .contact-title {
             font-family: 'Bebas Neue', sans-serif;
             font-size: 3.5rem;
-            letter-spacing: 3px;
+            letter-spacing: 1px;
             margin-bottom: 3rem;
             text-align: center;
             color: #fff;
@@ -1279,20 +1309,39 @@ body.portfolio-page .hamburger.active span {
     height: 250px;
 }
             
-            .about-name {
-                font-size: 2.5rem;
-            }
-            
+           .about-name {
+    font-size: 2.2rem ;
+    letter-spacing: 1px ;
+}
             .about-bio {
                 font-size: 1rem;
             }
+
+            .detail-desc {
+    font-size: 1rem;
+}
             
             .quote-text {
                 font-size: 1.8rem;
             }
             
             .section-title, .contact-title, .detail-title {
-                font-size: 2.5rem;
+                font-size: 2.2rem;
+                letter-spacing: 1px;
+            }
+            
+            .detail-desc {
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+            .teaser-title {
+            font-size: 2.2rem;
+            letter-spacing: 1px;
+            }
+
+            .project-title {
+            letter-spacing: 1px;
             }
             
             .projects-grid, .teaser-grid {
@@ -1319,6 +1368,8 @@ body.portfolio-page .hamburger.active span {
             .photo-main-container {
                 min-height: auto;
             }
+
+
         }
     </style>
 </head>
@@ -1574,11 +1625,12 @@ body.portfolio-page .hamburger.active span {
 
     <script>
         // STATE
-        const state = {
-            lang: 'en',
-            currentPage: 1,
-            projectsPerPage: window.innerWidth > 768 ? 9 : 8
-        };
+       const state = {
+    lang: 'en',
+    currentPage: 1,
+    projectsPerPage: window.innerWidth > 768 ? 9 : 8,
+    currentDetailIndex: undefined
+};
         
         // Update items per page on window resize
         window.addEventListener('resize', () => {
@@ -1813,6 +1865,7 @@ body.portfolio-page .hamburger.active span {
                 }, 100);
             },
             detail: (index) => {
+                state.currentDetailIndex = index;
                 const p = projects[index];
                 document.getElementById('detailTitle').textContent = state.lang === 'en' ? p.titleEn : p.titleEs;
                 document.getElementById('detailDesc').textContent = state.lang === 'en' ? p.descEn : p.descEs;
@@ -1841,49 +1894,61 @@ body.portfolio-page .hamburger.active span {
             }
         };
 
-        // LANGUAGE
-        function setLang(l) {
-            state.lang = l;
-            document.querySelectorAll('.lang-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.textContent.toLowerCase() === l);
-            });
-            updateTranslations();
-            updateWhatsApp();
-            renderProjects();
-            renderTeaser();
+      // LANGUAGE
+function setLang(l) {
+    state.lang = l;
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent.toLowerCase() === l);
+    });
+    updateTranslations();
+    updateWhatsApp();
+    renderProjects();
+    renderTeaser();
+    
+    // Update detail page if active
+    if (document.getElementById('detailPage').classList.contains('active')) {
+        if (state.currentDetailIndex !== undefined) {
+            const p = projects[state.currentDetailIndex];
+            document.getElementById('detailTitle').textContent = state.lang === 'en' ? p.titleEn : p.titleEs;
+            document.getElementById('detailDesc').textContent = state.lang === 'en' ? p.descEn : p.descEs;
+            document.getElementById('detailLinks').innerHTML = p.links.map(link => 
+                `<a href="${link.url}" class="detail-link">${state.lang === 'en' ? link.textEn : link.textEs}</a>`
+            ).join('');
         }
-        
-        function updateWhatsApp() {
-            const msg = encodeURIComponent(t[state.lang].whatsappMsg);
-            document.getElementById('navTalk').href = `https://wa.me/56933068802?text=${msg}`;
-        }
-        
-        function updateTranslations() {
-            const curr = t[state.lang];
-            document.getElementById('quote').textContent = curr.quote;
-            document.getElementById('portfolioTitle').textContent = curr.portfolioTitle;
-            document.getElementById('urbanTab').textContent = curr.urbanTab;
-            document.getElementById('bodyTab').textContent = curr.bodyTab;
-            document.getElementById('contactTitle').textContent = curr.contactTitle;
-            document.getElementById('nameLabel').textContent = curr.nameLabel;
-            document.getElementById('emailLabel').textContent = curr.emailLabel;
-            document.getElementById('messageLabel').textContent = curr.messageLabel;
-            document.getElementById('submitBtn').textContent = curr.submitBtn;
-            document.getElementById('backText').textContent = curr.backText;
-            document.getElementById('teaserTitle').textContent = curr.teaserTitle;
-            document.getElementById('viewAllBtn').textContent = curr.viewAllBtn;
-            document.getElementById('navPortfolio').textContent = curr.navPortfolio;
-            document.getElementById('navPhotography').textContent = curr.navPhotography;
-            document.getElementById('navAbout').textContent = curr.navAbout;
-            document.getElementById('navTalk').textContent = curr.navTalk;
-            document.getElementById('aboutName').textContent = curr.aboutName;
-            document.getElementById('aboutBio').textContent = curr.aboutBio;
-            document.getElementById('aboutContactTitle').textContent = curr.contactTitle;
-            document.getElementById('aboutNameLabel').textContent = curr.nameLabel;
-            document.getElementById('aboutEmailLabel').textContent = curr.emailLabel;
-            document.getElementById('aboutMessageLabel').textContent = curr.messageLabel;
-            document.getElementById('aboutSubmitBtn').textContent = curr.submitBtn;
-        }
+    }
+}
+
+function updateWhatsApp() {
+    const msg = encodeURIComponent(t[state.lang].whatsappMsg);
+    document.getElementById('navTalk').href = `https://wa.me/56933068802?text=${msg}`;
+}
+
+function updateTranslations() {
+    const curr = t[state.lang];
+    document.getElementById('quote').textContent = curr.quote;
+    document.getElementById('portfolioTitle').textContent = curr.portfolioTitle;
+    document.getElementById('urbanTab').textContent = curr.urbanTab;
+    document.getElementById('bodyTab').textContent = curr.bodyTab;
+    document.getElementById('contactTitle').textContent = curr.contactTitle;
+    document.getElementById('nameLabel').textContent = curr.nameLabel;
+    document.getElementById('emailLabel').textContent = curr.emailLabel;
+    document.getElementById('messageLabel').textContent = curr.messageLabel;
+    document.getElementById('submitBtn').textContent = curr.submitBtn;
+    document.getElementById('backText').textContent = curr.backText;
+    document.getElementById('teaserTitle').textContent = curr.teaserTitle;
+    document.getElementById('viewAllBtn').textContent = curr.viewAllBtn;
+    document.getElementById('navPortfolio').textContent = curr.navPortfolio;
+    document.getElementById('navPhotography').textContent = curr.navPhotography;
+    document.getElementById('navAbout').textContent = curr.navAbout;
+    document.getElementById('navTalk').textContent = curr.navTalk;
+    document.getElementById('aboutName').textContent = curr.aboutName;
+    document.getElementById('aboutBio').textContent = curr.aboutBio;
+    document.getElementById('aboutContactTitle').textContent = curr.contactTitle;
+    document.getElementById('aboutNameLabel').textContent = curr.nameLabel;
+    document.getElementById('aboutEmailLabel').textContent = curr.emailLabel;
+    document.getElementById('aboutMessageLabel').textContent = curr.messageLabel;
+    document.getElementById('aboutSubmitBtn').textContent = curr.submitBtn;
+}
 
         // CAROUSEL
         const carousel = {
