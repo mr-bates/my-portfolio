@@ -34,7 +34,7 @@
         
         .fade-in {
             opacity: 0;
-            transition: opacity 1s ease;
+            transition: opacity 0.6s ease;
         }
         
         .fade-in.visible {
@@ -312,8 +312,8 @@
     position: absolute;
     inset: 0;
     background: rgba(0,0,0,0.5);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(13px);
+    -webkit-backdrop-filter: blur(13px);
     z-index: 1;
 }
 
@@ -1446,8 +1446,7 @@ body.portfolio-page .hamburger.active span {
         <div class="nav-right">
             <nav>
                 <ul class="nav-menu" id="navMenu">
-                    <li><a onclick="nav.portfolio(); closeMenu();" id="navPortfolio">PORTFOLIO</a></li>
-                    <li><a onclick="nav.photography(); closeMenu();" id="navPhotography">PHOTOGRAPHY</a></li>
+                   <li><a onclick="nav.portfolio(); setTimeout(() => initPortfolioAnimations(), 100); closeMenu();" id="navPortfolio">PORTFOLIO</a></li>    <li><a onclick="nav.photography(); setTimeout(() => initPhotoAnimations(), 100); closeMenu();" id="navPhotography">PHOTOGRAPHY</a></li>
                     <li><a onclick="nav.about(); closeMenu();" id="navAbout">ABOUT ME</a></li>
                     <li><a id="navTalk" href="" target="_blank">LET'S TALK!</a></li>
                 </ul>
@@ -1484,7 +1483,7 @@ body.portfolio-page .hamburger.active span {
 <section class="quote-section" id="quoteSection">
     <div class="quote-video-bg" id="quoteVideo">
         <iframe 
-            src="https://player.vimeo.com/video/1136704050?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1&quality=1080p" 
+            src="https://player.vimeo.com/video/1136797661?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1&quality=1080p" 
             frameborder="0" 
             allow="autoplay; fullscreen" 
             allowfullscreen>
@@ -1603,8 +1602,9 @@ body.portfolio-page .hamburger.active span {
     <div id="photoPage" class="page">
         <section class="photography-page">
             <div class="photo-tabs">
-                <button class="photo-tab active" id="urbanTab" onclick="photo.switchGallery('urban')">STORIES</button>
-                <button class="photo-tab" id="bodyTab" onclick="photo.switchGallery('body')">FIGURATIVE</button>
+               <button class="photo-tab active" id="urbanTab" onclick="photo.switchGallery('urban'); setTimeout(() => initPhotoAnimations(), 100);">STORIES</button>
+              <button class="photo-tab" id="bodyTab" onclick="photo.switchGallery('body'); setTimeout(() => initPhotoAnimations(), 100);">FIGURATIVE
+              </button>
             </div>
             <div class="photo-gallery active" id="urbanGallery">
                 <div class="photo-main-container">
@@ -1633,10 +1633,8 @@ body.portfolio-page .hamburger.active span {
                 </div>
                 <div class="photo-thumbs" id="bodyThumbs"></div>
                 <div class="pagination">
-                    <button id="bodyPrevBtn" class="page-btn photo-page-btn" onclick="photo.prevPage('body')">←</button>
-                    <span id="bodyPageInfo" class="page-info">1 / 2</span>
-                    <button id="bodyNextBtn" class="page-btn photo-page-btn" onclick="photo.nextPage('body')">→</button>
-                </div>
+<button id="bodyPrevBtn" class="page-btn photo-page-btn" onclick="photo.prevPage('body'); setTimeout(() => initPhotoAnimations(), 100);">←</button>                    <span id="bodyPageInfo" class="page-info">1 / 2</span>
+<button id="bodyNextBtn" class="page-btn photo-page-btn" onclick="photo.nextPage('body'); setTimeout(() => initPhotoAnimations(), 100);">→</button>                </div>
             </div>
          </section>
         
@@ -1663,7 +1661,7 @@ body.portfolio-page .hamburger.active span {
             if (state.projectsPerPage !== newProjectsPerPage) {
                 state.projectsPerPage = newProjectsPerPage;
                 state.currentPage = 1; // Reset to page 1 when changing layout
-                renderProjects();
+                renderProjects(); setTimeout(() => initPortfolioAnimations(), 100);
             }
         });
 
@@ -2110,10 +2108,10 @@ function updateTranslations() {
             urbanPage: 1,
             bodyPage: 1,
             photosPerPage: 8,
-            init: () => {
-                photo.renderGallery('urban');
-                photo.renderGallery('body');
-            },
+          init: () => {
+    photo.renderGallery('urban');
+    photo.renderGallery('body');
+},
             renderGallery: (type) => {
                 const allPhotos = type === 'urban' ? photo.urbanPhotos : photo.bodyPhotos;
                 const currentPage = type === 'urban' ? photo.urbanPage : photo.bodyPage;
@@ -2278,6 +2276,54 @@ function updateTranslations() {
        // Let the mailto: action handle it - no preventDefault
       return true;
        };
+
+
+
+
+// NEW: Initialize Photography Page Animations
+function initPhotoAnimations() {
+    const photoPage = document.getElementById('photoPage');
+    if (!photoPage || !photoPage.classList.contains('active')) return;
+
+    const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) entry.target.classList.add('visible');
+        });
+    }, observerOptions);
+
+    // Tabs
+    const tabs = photoPage.querySelector('.photo-tabs');
+    if (tabs && !tabs.classList.contains('visible')) {
+        tabs.classList.add('fade-in-up');
+        observer.observe(tabs);
+    }
+
+    // Active gallery
+    const activeGallery = photoPage.querySelector('.photo-gallery.active');
+    if (activeGallery) {
+        const mainContainer = activeGallery.querySelector('.photo-main-container');
+        if (mainContainer && !mainContainer.classList.contains('visible')) {
+            mainContainer.classList.add('fade-in');
+            observer.observe(mainContainer);
+        }
+
+        const thumbs = activeGallery.querySelectorAll('.photo-thumb');
+        thumbs.forEach((thumb, index) => {
+            if (!thumb.classList.contains('visible')) {
+                thumb.classList.add('fade-in');
+                setTimeout(() => observer.observe(thumb), index * 40);
+            }
+        });
+
+        const pagination = activeGallery.querySelector('.pagination');
+        if (pagination && !pagination.classList.contains('visible')) {
+            pagination.classList.add('fade-in-up');
+            observer.observe(pagination);
+        }
+    }
+}
+
 
         // INIT
         window.addEventListener('DOMContentLoaded', function() {
@@ -2448,7 +2494,13 @@ document.addEventListener('dragstart', function(e) {
         // Initialize on load
         window.addEventListener('DOMContentLoaded', initAnimations);
 
-
+// Animate About page cover
+// document.addEventListener('DOMContentLoaded', () => {
+    // const aboutCover = document.querySelector('.about-cover');
+    // if (aboutCover) {
+     //   observer.observe(aboutCover);
+   // }
+//});
 
 
 
