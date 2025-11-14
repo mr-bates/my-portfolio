@@ -942,7 +942,22 @@ img {
         .lightbox-close:hover {
             transform: rotate(90deg);
         }
+.photo-nav-arrows {
+    padding: 0 0.5rem;
+}
 
+.photo-arrow {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+}
+
+.photo-counter {
+    bottom: 1rem;
+    right: 1rem;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+}
         /* ABOUT PAGE */
         .about-page {
             background: #fff;
@@ -2286,24 +2301,23 @@ document.addEventListener('dragstart', function(e) {
     }
 });
 
-// iOS/Mobile long-press protection
-document.addEventListener('touchstart', function(e) {
+// iOS/Mobile long-press protection - but allow lightbox clicks
+document.addEventListener('contextmenu', function(e) {
     if (e.target.tagName === 'IMG') {
         e.preventDefault();
+        return false;
     }
-}, { passive: false });
+});
 
-document.addEventListener('touchend', function(e) {
-    if (e.target.tagName === 'IMG') {
-        e.preventDefault();
+// Block iOS image save callout
+const style = document.createElement('style');
+style.textContent = `
+    img {
+        -webkit-user-select: none !important;
+        -webkit-touch-callout: none !important;
     }
-}, { passive: false });
-
-document.addEventListener('touchmove', function(e) {
-    if (e.target.tagName === 'IMG') {
-        e.preventDefault();
-    }
-}, { passive: false });
+`;
+document.head.appendChild(style);
 
 // Prevent iOS callout menu
 document.addEventListener('gesturestart', function(e) {
